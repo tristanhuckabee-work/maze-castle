@@ -24,5 +24,5 @@ const server = http.createServer((req, res) => {
   }
 });
 
-const port = 5500;
+const port = process.env.PORT || 5500;
 server.listen(port, () => console.log('Live on p:5500'));
