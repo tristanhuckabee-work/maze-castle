@@ -1,5 +1,6 @@
 # Maze Castle
 Generate a 'maze' and look at some very basic algorithms.
+
 This is a foray into visually representing data and it's behaviors.
 
 **[LIVE LINK](https://maze-castle.onrender.com/)**
