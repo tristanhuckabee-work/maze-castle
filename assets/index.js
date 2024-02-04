@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
   firstRun(find_range_cells, two_point_cells);
 
   let fr_maze;
-  let tp_maze
+  let tp_maze;
 
   find_range_maze.addEventListener('click', () => {
     find_range_cells.innerHTML = ""

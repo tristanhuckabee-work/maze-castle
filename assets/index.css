@@ -95,11 +95,11 @@ button:hover {
   width: 25px;
 }
 
-#two-point .path .x {
+#two-point .path .x, .start-coords .x, .end-coords .x {
   color: blue;
 }
 
-#two-point .path .y {
+#two-point .path .y, .start-coords .y, .end-coords .y {
   color: red;
 }
 

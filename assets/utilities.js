@@ -46,28 +46,8 @@ function getNeighbors(coords, parentID) {
   })
   return Array.from(nCoords);
 }
-function neighborAlgo(coords, parentID) {
-  let nCoords = [];
 
-  let [x, y] = coords.split('.');
-  x = Number(x);
-  y = Number(y);
-
-  const curr = document.querySelector(`#${parentID} .cell-container div.x${x}y${y}`);
-  curr.classList.add('checked');
-
-  [x - 1, x, x + 1].forEach(el => {
-    let left = document.querySelector(`#${parentID} .cell-container .path.x${el}y${y + 1}`);
-    if (left) nCoords.push(`${el}.${y - 1}`);
-    let mid = document.querySelector(`#${parentID} .cell-container .path.x${el}y${y}`);
-    if (mid) nCoords.push(`${el}.${y}`);
-    let right = document.querySelector(`#${parentID} .cell-container .path.x${el}y${y - 1}`);
-    if (right) nCoords.push(`${el}.${y + 1}`);
-  })
-  return Array.from(nCoords);
-}
-
-const sleep = delay => new Promise(res => setTimeout(res, delay));
+const _sleep = delay => new Promise(res => setTimeout(res, delay));
 
 export async function bft(coords, parentID) {
   let [x, y] = coords.split('.');
@@ -80,7 +60,8 @@ export async function bft(coords, parentID) {
   while (queue.length) {
     let neighbors = getNeighbors(queue.shift(), parentID);
     neighbors = neighbors.sort();
-    await sleep(100);
+    await _sleep(100);
+
     neighbors.forEach(coord => {
       if (!seen.has(coord)) {
         seen.add(coord);
@@ -98,21 +79,13 @@ export async function dfs(start, end, parentID) {
   startNode.classList.add('origin');
   endNode.classList.add('end-point');
 
-  // console.log('Start: ', startNode);
-  // console.log('End: ', endNode);
-
   let seen = new Set([start]);
-  let unseen = new Set()
   let queue = [start];
 
   while (queue.length) {
     let neighbors = getNeighbors(queue.pop(), parentID);
-    if (e_x <= s_x) {
-      neighbors.sort()
-    } else {
-      neighbors.sort().reverse();
-    }
-    await sleep(100);
+    await _sleep(100);
+
     neighbors.sort((a, b) => {
       let [a_x, a_y] = a.split('.');
       let [b_x, b_y] = b.split('.');
@@ -138,6 +111,7 @@ function tp_closure() {
 
   async function inner(node) {
     clickCount++;
+
     let cells = document.querySelectorAll('.path');
     cells.forEach(cell => {
       cell.classList.remove('checked');
@@ -161,9 +135,14 @@ function tp_closure() {
     classes = classes.split(' ')[1];
     selector = getCoords(classes);
 
+    let startText = document.querySelector('.start-coords');
+    let endText = document.querySelector('.end-coords');
     if (clickCount % 2) {
+      endText.innerHTML = "END : (null, null)"
+      startText.innerHTML = `START : (<span class="x">${selector.split('.')[0]}</span>, <span class="y">${selector.split('.')[1]}</span>)`
       first = selector;
     } else {
+      endText.innerHTML = `END : (<span class="x">${selector.split('.')[0]}</span>, <span class="y">${selector.split('.')[1]}</span>)`
       second = selector;
       await dfs(first, second, 'two-point');
     }
