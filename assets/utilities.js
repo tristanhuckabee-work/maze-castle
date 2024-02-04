@@ -79,6 +79,7 @@ export async function bft(coords, parentID) {
 
   while (queue.length) {
     let neighbors = getNeighbors(queue.shift(), parentID);
+    neighbors = neighbors.sort();
     await sleep(100);
     neighbors.forEach(coord => {
       if (!seen.has(coord)) {
@@ -106,7 +107,20 @@ export async function dfs(start, end, parentID) {
 
   while (queue.length) {
     let neighbors = getNeighbors(queue.pop(), parentID);
+    if (e_x <= s_x) {
+      neighbors.sort()
+    } else {
+      neighbors.sort().reverse();
+    }
     await sleep(100);
+    neighbors.sort((a, b) => {
+      let [a_x, a_y] = a.split('.');
+      let [b_x, b_y] = b.split('.');
+
+      const distance = (n_x, n_y) => Math.sqrt( (Math.abs(e_x - n_x)**2) + (Math.abs(e_y - n_y)**2));
+
+      return distance(b_x, b_y) - distance(a_x, a_y);
+    })
     neighbors.forEach(coord => {
       if (end == coord) queue = [];
       if (!seen.has(coord)) {
