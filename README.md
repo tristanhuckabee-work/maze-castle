@@ -1,6 +1,11 @@
 # Maze Castle
-Generate a 'maze' and look at some algorithms.
+Generate a 'maze' and look at some very basic algorithms.
 
-## How to Run
+This is a foray into visually representing data and it's behaviors.
+
+**[LIVE LINK](https://maze-castle.onrender.com/)**
+
+## How to Run Locally
 1. Clone it
-2. Start the HTML in your browser
+2. put `npm start` in your terminal
+3. navigate to `localhost:5500`
