@@ -55,23 +55,22 @@ export async function bft(coords, parentID) {
   curr.classList.add('origin');
 
   let seen = new Set([coords]);
-  let queue = [coords];
+  let stack = [coords];
 
-  while (queue.length) {
-    let neighbors = getNeighbors(queue.shift(), parentID);
+  while (stack.length) {
+    let neighbors = getNeighbors(stack.shift(), parentID);
     neighbors = neighbors.sort();
     await _sleep(100);
 
     neighbors.forEach(coord => {
       if (!seen.has(coord)) {
         seen.add(coord);
-        queue.push(coord);
+        stack.push(coord);
       }
     })
   }
 }
 export async function dfs(start, end, parentID) {
-  // const parent = start.parentNode.parentNode.id;
   const [s_x, s_y] = start.split('.');
   const [e_x, e_y] = end.split('.');
   let startNode = document.querySelector(`#${parentID} .cell-container div.x${s_x}y${s_y}`);
@@ -80,10 +79,10 @@ export async function dfs(start, end, parentID) {
   endNode.classList.add('end-point');
 
   let seen = new Set([start]);
-  let queue = [start];
+  let stack = [start];
 
-  while (queue.length) {
-    let neighbors = getNeighbors(queue.pop(), parentID);
+  while (stack.length) {
+    let neighbors = getNeighbors(stack.pop(), parentID);
     await _sleep(100);
 
     neighbors.sort((a, b) => {
@@ -95,10 +94,10 @@ export async function dfs(start, end, parentID) {
       return distance(b_x, b_y) - distance(a_x, a_y);
     })
     neighbors.forEach(coord => {
-      if (end == coord) queue = [];
+      if (end == coord) stack = [];
       if (!seen.has(coord)) {
         seen.add(coord);
-        queue.push(coord);
+        stack.push(coord);
       }
     })
   }
@@ -156,6 +155,7 @@ let tp_cb = tp_closure();
 
 export function createCell(val, parent, x, y) {
   let cell = document.createElement('div');
+
   cell.innerHTML = `<span class='x'>${x}</span><span class='y'>${y}</span>`
   cell.classList.add('cell');
   cell.classList.add(`x${x}y${y}`);
